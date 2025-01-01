@@ -29,8 +29,12 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
-      date: {
-        type: DataTypes.DATE,
+      startDate: {
+        type: DataTypes.DATEONLY,
+        allowNull: false,
+      },
+      endDate: {
+        type: DataTypes.DATEONLY,
         allowNull: false,
       },
       hoursWorked: {
@@ -38,7 +42,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       },
       totalAmount: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.FLOAT,
         allowNull: false,
       }, // hours_worked * hourly_rate
       startTime: {
@@ -54,12 +58,12 @@ module.exports = (sequelize, DataTypes) => {
       sequelize,
       modelName: "Project_Progress",
       // Define a unique constraint for the combination of EmployeeId, ProjectId and Date
-      indexes: [
-        {
-          unique: true,
-          fields: ["employeeId", "projectId", "date"],
-        },
-      ],
+      // indexes: [
+      //   {
+      //     unique: true,
+      //     fields: ["employeeId", "projectId", "date"],
+      //   },
+      // ],
     }
   );
   return Project_Progress;

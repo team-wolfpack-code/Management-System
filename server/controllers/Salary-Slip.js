@@ -1,5 +1,14 @@
 const { db } = require("../db/models");
-const { Salary_Slip, Salary, User } = db;
+const { Salary_Slip, Salary, User, Attendance, Project, Project_Progress } = db;
+const {
+  endOfMonth,
+  startOfMonth,
+  differenceInBusinessDays,
+  subMonths,
+  format,
+} = require("date-fns");
+const { CalculateTax } = require("./Tax");
+const { Op, fn, col } = require("sequelize");
 
 const GetAllSalarySlips = async () => {
   try {
@@ -57,7 +66,13 @@ const UpdateSalarySlip = async (parent, args) => {
     }
   } catch (err) {
     console.error(err);
-    throw Error(err);
+    if (err.parent?.code === "23505") {
+      throw Error(err.errors[0].message);
+    } else if (err.parent?.code === "23503") {
+      throw Error(err.parent.detail);
+    } else {
+      throw Error(err);
+    }
   }
 };
 
@@ -80,19 +95,127 @@ const DeleteSalarySlip = async (parent, args) => {
 
 const GenerateSalarySlip = async (parent, args) => {
   try {
-    //  salary: { type: new GraphQLNonNull(GraphQLFloat) },
-    //     overtime: { type: new GraphQLNonNull(GraphQLFloat) },
-    //     date: { type: new GraphQLNonNull(GraphQLDate) },
-    //     totalPay: { type: new GraphQLNonNull(GraphQLFloat) },
     const { employeeId } = args;
-    const employeeSalary = await User.findOne({
+
+    const startOfPrevMonth = startOfMonth(subMonths(new Date(), 1));
+    const endOfPrevMonth = endOfMonth(subMonths(new Date(), 1));
+
+    const employee = await User.findOne({
       where: { id: employeeId },
-      include: { all: true },
+      attributes: [
+        "id",
+        "shiftId",
+        "roleId",
+        "departmentId",
+        "employeeId",
+        "name",
+        "mobileNo",
+        "cnic",
+        "email",
+        "address",
+        "jobTitle",
+        "hireDate",
+        "dob",
+        "status",
+        "leaves",
+        "availableLeaves",
+        "commissionFlag",
+        "commissionPercentage",
+        [fn("SUM", col("Attendances.leave")), "currentMonthLeaves"], // Add SUM aggregation
+      ],
+      include: [
+        {
+          model: Salary,
+          as: "Salary",
+          required: false,
+          attributes: ["amount"],
+        },
+        {
+          model: Attendance,
+          as: "Attendances",
+          required: false,
+          attributes: [],
+          where: {
+            date: {
+              [Op.between]: [startOfPrevMonth, endOfPrevMonth],
+            },
+          },
+        },
+      ],
+      group: ["User.id", "Salary.id"],
     });
-    console.log(">>>>>>>>>>>>>>>>>>", employeeSalary);
-    console.log(">>>>>>>>>>>>>>>>>>", employeeSalary.Salary.amount);
-    const date = new Date().toISOString().split("T")[0];
-    const salary = employeeSalary.Salary.amount;
+
+    let commissionAmount = 0;
+    if (employee.commissionFlag) {
+      const userProjects = await Project.findAll({
+        where: {
+          resourcesAllocated: {
+            [Op.contains]: [employeeId],
+          },
+        },
+        attributes: [
+          "id",
+          "name",
+          "hourlyRate",
+          [fn("SUM", col("Project_Progress.totalAmount")), "totalEarning"],
+        ],
+
+        include: [
+          {
+            model: Project_Progress,
+            as: "Project_Progress",
+            required: false,
+            attributes: [],
+            where: {
+              endDate: {
+                [Op.between]: [startOfPrevMonth, endOfPrevMonth],
+              },
+            },
+          },
+        ],
+        group: ["Project.id"], // Group by Project ID to allow aggregation
+      });
+
+      const totalSum = userProjects.reduce((sum, project) => {
+        return sum + (project.dataValues.totalEarning || 0);
+      }, 0);
+      commissionAmount = employee.commissionPercentage * totalSum;
+    }
+
+    const date = format(startOfPrevMonth, "MMMM, yyyy");
+
+    const workingDays = differenceInBusinessDays(
+      endOfPrevMonth,
+      startOfPrevMonth
+    );
+
+    const tax = await CalculateTax(parent, {
+      employeeSalary: employee.Salary.amount,
+    });
+
+    const leaves =
+      employee.availableLeaves < 0
+        ? employee.dataValues.currentMonthLeaves || 0
+        : 0;
+
+    const fine = leaves * (employee.Salary.amount / workingDays);
+
+    return {
+      employeeId: employee.employeeId,
+      name: employee.name,
+      designation: employee.jobTitle,
+      dateOfJoining: employee.hireDate,
+      date,
+      workingDays,
+      salary: employee.Salary.amount,
+      basicSalary: employee.Salary.amount * 0.6667,
+
+      providentFund: employee.Salary.amount * 0.6667 * 0.075,
+      tax: Math.round(tax),
+      fine,
+      extendedLeaves: leaves,
+      commission: commissionAmount,
+    };
   } catch (err) {
     console.error(err);
     throw Error(err);

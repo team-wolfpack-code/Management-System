@@ -82,7 +82,7 @@ module.exports = {
         allowNull: false,
       },
       hourlyRate: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.DECIMAL,
         allowNull: false,
       },
       b2bFlag: {

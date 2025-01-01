@@ -21,25 +21,52 @@ module.exports = {
           key: "id",
         },
       },
-      salary: {
+      date: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
+      workingDays: {
         type: Sequelize.INTEGER,
+        allowNull: false,
+      },
+      salary: {
+        type: Sequelize.FLOAT,
+        allowNull: false,
+      },
+      basicSalary: {
+        type: Sequelize.FLOAT,
         allowNull: false,
       },
       overtimePrice: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.FLOAT,
         allowNull: false,
       },
       overtimeHours: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.FLOAT,
         allowNull: false,
       },
       commission: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.FLOAT,
         allowNull: false,
       },
-
+      extendedLeaves: {
+        type: Sequelize.FLOAT,
+        allowNull: false,
+      },
+      fine: {
+        type: Sequelize.FLOAT,
+        allowNull: false,
+      },
+      tax: {
+        type: Sequelize.FLOAT,
+        allowNull: false,
+      },
+      providentFund: {
+        type: Sequelize.FLOAT,
+        allowNull: false,
+      },
       totalPay: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.FLOAT,
         allowNull: false,
       },
 

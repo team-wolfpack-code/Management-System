@@ -21,25 +21,52 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
-      salary: {
+      date: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      workingDays: {
         type: DataTypes.INTEGER,
+        allowNull: false,
+      },
+      salary: {
+        type: DataTypes.FLOAT,
+        allowNull: false,
+      },
+      basicSalary: {
+        type: DataTypes.FLOAT,
         allowNull: false,
       },
       overtimePrice: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.FLOAT,
         allowNull: false,
       },
       overtimeHours: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.FLOAT,
         allowNull: false,
       },
       commission: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.FLOAT,
         allowNull: false,
       },
-
+      extendedLeaves: {
+        type: DataTypes.FLOAT,
+        allowNull: false,
+      },
+      fine: {
+        type: DataTypes.FLOAT,
+        allowNull: false,
+      },
+      tax: {
+        type: DataTypes.FLOAT,
+        allowNull: false,
+      },
+      providentFund: {
+        type: DataTypes.FLOAT,
+        allowNull: false,
+      },
       totalPay: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.FLOAT,
         allowNull: false,
       },
     },

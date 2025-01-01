@@ -16,14 +16,16 @@ module.exports = (sequelize, DataTypes) => {
       minIncome: {
         type: DataTypes.INTEGER,
         allowNull: false,
+        unique: true,
       },
       maxIncome: {
         type: DataTypes.INTEGER,
         allowNull: false,
+        unique: true,
       },
       taxRate: {
-        type: DataTypes.DECIMAL(10, 2),
-        // allowNull: false,
+        type: DataTypes.DOUBLE,
+        allowNull: false,
       },
       taxAmount: {
         type: DataTypes.INTEGER,

@@ -1,3 +1,4 @@
+const { Op } = require("sequelize");
 const { db } = require("../db/models");
 const { Tax } = db;
 
@@ -25,9 +26,7 @@ const GetTaxById = async (parent, args) => {
 
 const CreateTax = async (parent, args) => {
   try {
-    const tax = await Tax.create({
-      args,
-    });
+    const tax = await Tax.create(args);
     return tax;
   } catch (err) {
     console.error(err);
@@ -59,7 +58,13 @@ const UpdateTax = async (parent, args) => {
     }
   } catch (err) {
     console.error(err);
-    throw Error(err);
+    if (err.parent?.code === "23505") {
+      throw Error(err.errors[0].message);
+    } else if (err.parent?.code === "23503") {
+      throw Error(err.parent.detail);
+    } else {
+      throw Error(err);
+    }
   }
 };
 
@@ -80,10 +85,34 @@ const DeleteTax = async (parent, args) => {
   }
 };
 
+const CalculateTax = async (parent, args) => {
+  try {
+    const { employeeSalary } = args;
+    const annualSalary = employeeSalary * 12;
+
+    const tax = await Tax.findOne({
+      where: {
+        [Op.and]: [
+          { minIncome: { [Op.lte]: annualSalary } },
+          { maxIncome: { [Op.gte]: annualSalary } },
+        ],
+      },
+    });
+    const annualTax =
+      (annualSalary - tax.minIncome + 1) * tax.taxRate + tax.taxAmount;
+
+    return annualTax / 12;
+  } catch (err) {
+    console.error(err);
+    throw Error(err);
+  }
+};
+
 module.exports = {
   GetAllTaxes,
   GetTaxById,
   CreateTax,
   UpdateTax,
   DeleteTax,
+  CalculateTax,
 };

@@ -18,14 +18,16 @@ module.exports = {
         minIncome: {
           type: Sequelize.INTEGER,
           allowNull: false,
+          unique: true,
         },
         maxIncome: {
           type: Sequelize.INTEGER,
           allowNull: false,
+          unique: true,
         },
         taxRate: {
-          type: Sequelize.DECIMAL(10, 2),
-          // allowNull: false,
+          type: Sequelize.DOUBLE,
+          allowNull: false,
         },
         taxAmount: {
           type: Sequelize.INTEGER,

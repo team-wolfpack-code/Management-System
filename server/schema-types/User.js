@@ -6,6 +6,7 @@ const {
   GraphQLID,
   GraphQLInt,
   GraphQLBoolean,
+  GraphQLFloat,
 } = graphql;
 
 const UserType = new GraphQLObjectType({
@@ -24,12 +25,12 @@ const UserType = new GraphQLObjectType({
     address: { type: GraphQLString },
     jobTitle: { type: GraphQLString },
     hireDate: { type: GraphQLDate },
-    dob: { type: GraphQLString },
+    dob: { type: GraphQLDate },
     status: { type: GraphQLString },
     leaves: { type: GraphQLInt },
-    availableLeaves: { type: GraphQLInt },
+    availableLeaves: { type: GraphQLFloat },
     commissionFlag: { type: GraphQLBoolean },
-    commissionPercentage: { type: GraphQLInt },
+    commissionPercentage: { type: GraphQLFloat },
 
     createdAt: { type: GraphQLString },
     updatedAt: { type: GraphQLString },

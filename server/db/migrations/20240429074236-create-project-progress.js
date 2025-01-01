@@ -31,8 +31,12 @@ module.exports = {
             key: "id",
           },
         },
-        date: {
-          type: Sequelize.DATE,
+        startDate: {
+          type: Sequelize.DATEONLY,
+          allowNull: false,
+        },
+        endDate: {
+          type: Sequelize.DATEONLY,
           allowNull: false,
         },
         hoursWorked: {
@@ -40,7 +44,7 @@ module.exports = {
           allowNull: false,
         },
         totalAmount: {
-          type: Sequelize.INTEGER,
+          type: Sequelize.FLOAT,
           allowNull: false,
         }, // hours_worked * hourly_rate
         startTime: {
@@ -70,12 +74,12 @@ module.exports = {
       },
       {
         // Define a unique constraint for the combination of employeeId, projectId and date
-        indexes: [
-          {
-            unique: true,
-            fields: ["employeeId", "projectId", "date"],
-          },
-        ],
+        // indexes: [
+        //   {
+        //     unique: true,
+        //     fields: ["employeeId", "projectId", "date"],
+        //   },
+        // ],
       }
     );
   },
