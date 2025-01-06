@@ -30,6 +30,7 @@ const {
   SalarySlipType,
   TaxType,
   GenerateSalarySlipType,
+  OvertimeType,
 } = require("../schema-types");
 
 const {
@@ -117,6 +118,13 @@ const {
   UpdateTax,
   DeleteTax,
 } = require("../controllers/Tax");
+const {
+  AddOvertime,
+  UpdateOvertime,
+  DeleteOvertime,
+  GetAllOvertimes,
+  GetOvertimeById,
+} = require("../controllers/Overtime");
 
 const RootQuery = new GraphQLObjectType({
   name: "RootQueryType",
@@ -158,6 +166,19 @@ const RootQuery = new GraphQLObjectType({
       description: "A single Department",
       args: { id: { type: new GraphQLNonNull(GraphQLID) } },
       resolve: (parent, args) => GetDepartmentById(parent, args),
+    },
+
+    // Overtime:
+    overtimes: {
+      type: new GraphQLList(OvertimeType),
+      description: "List of all Overtimes",
+      resolve: (parent, args) => GetAllOvertimes(),
+    },
+    overtime: {
+      type: OvertimeType,
+      description: "A single Overtime",
+      args: { id: { type: new GraphQLNonNull(GraphQLID) } },
+      resolve: (parent, args) => GetOvertimeById(parent, args),
     },
 
     // Role:
@@ -407,6 +428,37 @@ const Mutation = new GraphQLObjectType({
       resolve: (parent, args) => DeleteRole(parent, args),
     },
 
+    // Overtime:
+    addOvertime: {
+      type: OvertimeType,
+      description: "Add a new Overtime",
+      args: {
+        roleId: { type: new GraphQLNonNull(GraphQLID) },
+        gender: { type: new GraphQLNonNull(GraphQLNonEmptyString) },
+        rate: { type: new GraphQLNonNull(GraphQLFloat) },
+      },
+      resolve: (parent, args) => AddOvertime(parent, args),
+    },
+    updateOvertime: {
+      type: GraphQLString,
+      description: "Update a Overtime",
+      args: {
+        id: { type: new GraphQLNonNull(GraphQLID) },
+        roleId: { type: GraphQLID },
+        gender: { type: GraphQLNonEmptyString },
+        rate: { type: GraphQLFloat },
+      },
+      resolve: (parent, args) => UpdateOvertime(parent, args),
+    },
+    deleteOvertime: {
+      type: GraphQLString,
+      description: "Delete a Overtime",
+      args: {
+        id: { type: new GraphQLNonNull(GraphQLID) },
+      },
+      resolve: (parent, args) => DeleteOvertime(parent, args),
+    },
+
     // User:
     addUser: {
       type: UserType,
@@ -418,6 +470,7 @@ const Mutation = new GraphQLObjectType({
         employeeId: { type: new GraphQLNonNull(GraphQLNonEmptyString) },
         name: { type: new GraphQLNonNull(GraphQLNonEmptyString) },
         mobileNo: { type: new GraphQLNonNull(GraphQLNonEmptyString) },
+        gender: { type: new GraphQLNonNull(GraphQLNonEmptyString) },
         cnic: { type: new GraphQLNonNull(GraphQLNonEmptyString) },
         email: { type: new GraphQLNonNull(GraphQLNonEmptyString) },
         password: { type: new GraphQLNonNull(GraphQLNonEmptyString) },
@@ -430,6 +483,9 @@ const Mutation = new GraphQLObjectType({
         availableLeaves: { type: new GraphQLNonNull(GraphQLFloat) },
         commissionFlag: { type: new GraphQLNonNull(GraphQLBoolean) },
         commissionPercentage: {
+          type: new GraphQLNonNull(GraphQLFloat),
+        },
+        providentFund: {
           type: new GraphQLNonNull(GraphQLFloat),
         },
       },
@@ -446,6 +502,7 @@ const Mutation = new GraphQLObjectType({
         employeeId: { type: GraphQLNonEmptyString },
         name: { type: GraphQLNonEmptyString },
         mobileNo: { type: GraphQLNonEmptyString },
+        gender: { type: GraphQLNonEmptyString },
         cnic: { type: GraphQLNonEmptyString },
         email: { type: GraphQLNonEmptyString },
         password: { type: GraphQLNonEmptyString },
@@ -458,6 +515,9 @@ const Mutation = new GraphQLObjectType({
         availableLeaves: { type: GraphQLFloat },
         commissionFlag: { type: GraphQLBoolean },
         commissionPercentage: {
+          type: GraphQLFloat,
+        },
+        providentFund: {
           type: GraphQLFloat,
         },
       },
@@ -532,6 +592,9 @@ const Mutation = new GraphQLObjectType({
         leave: {
           type: new GraphQLNonNull(GraphQLFloat),
         },
+        overtime: {
+          type: GraphQLFloat,
+        },
       },
       resolve: (parent, args) => CreateAttendance(parent, args),
     },
@@ -554,6 +617,9 @@ const Mutation = new GraphQLObjectType({
           type: GraphQLBoolean,
         },
         leave: {
+          type: GraphQLFloat,
+        },
+        overtime: {
           type: GraphQLFloat,
         },
       },
@@ -757,6 +823,7 @@ const Mutation = new GraphQLObjectType({
         fine: { type: new GraphQLNonNull(GraphQLFloat) },
         tax: { type: new GraphQLNonNull(GraphQLFloat) },
         providentFund: { type: new GraphQLNonNull(GraphQLFloat) },
+        others: { type: new GraphQLNonNull(GraphQLFloat) },
         totalPay: { type: new GraphQLNonNull(GraphQLFloat) },
       },
       resolve: (parent, args) => CreateSalarySlip(parent, args),
@@ -778,6 +845,7 @@ const Mutation = new GraphQLObjectType({
         fine: { type: GraphQLFloat },
         tax: { type: GraphQLFloat },
         providentFund: { type: GraphQLFloat },
+        others: { type: GraphQLFloat },
         totalPay: { type: GraphQLFloat },
       },
       resolve: (parent, args) => UpdateSalarySlip(parent, args),

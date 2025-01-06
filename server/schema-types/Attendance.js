@@ -15,6 +15,7 @@ const AttendanceType = new GraphQLObjectType({
     tourHoliday: { type: GraphQLBoolean },
     weekend: { type: GraphQLBoolean },
     leave: { type: GraphQLFloat },
+    overtime: { type: GraphQLFloat },
 
     createdAt: { type: GraphQLDate },
     updatedAt: { type: GraphQLDate },

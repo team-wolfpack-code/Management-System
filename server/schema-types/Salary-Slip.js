@@ -25,6 +25,7 @@ const SalarySlipType = new GraphQLObjectType({
     fine: { type: GraphQLFloat },
     tax: { type: GraphQLFloat },
     providentFund: { type: GraphQLFloat },
+    others: { type: GraphQLFloat },
     totalPay: { type: GraphQLFloat },
 
     createdAt: { type: GraphQLDate },
@@ -50,6 +51,7 @@ const GenerateSalarySlipType = new GraphQLObjectType({
     fine: { type: GraphQLFloat },
     tax: { type: GraphQLFloat },
     providentFund: { type: GraphQLFloat },
+    others: { type: GraphQLFloat },
     totalPay: { type: GraphQLFloat },
 
     createdAt: { type: GraphQLDate },

@@ -32,6 +32,7 @@ const AddUser = async (parent, args) => {
       employeeId,
       name,
       mobileNo,
+      gender,
       cnic,
       email,
       password,
@@ -44,6 +45,7 @@ const AddUser = async (parent, args) => {
       availableLeaves,
       commissionFlag,
       commissionPercentage,
+      providentFund,
     } = args;
 
     const user = await User.create({
@@ -53,6 +55,7 @@ const AddUser = async (parent, args) => {
       employeeId,
       name,
       mobileNo,
+      gender,
       cnic,
       email,
       password,
@@ -65,6 +68,7 @@ const AddUser = async (parent, args) => {
       availableLeaves,
       commissionFlag,
       commissionPercentage,
+      providentFund,
     });
     return user;
   } catch (err) {

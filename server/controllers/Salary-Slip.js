@@ -1,5 +1,14 @@
 const { db } = require("../db/models");
-const { Salary_Slip, Salary, User, Attendance, Project, Project_Progress } = db;
+const {
+  Salary_Slip,
+  Salary,
+  User,
+  Attendance,
+  Project,
+  Project_Progress,
+  Role,
+  Overtime,
+} = db;
 const {
   endOfMonth,
   startOfMonth,
@@ -110,6 +119,7 @@ const GenerateSalarySlip = async (parent, args) => {
         "employeeId",
         "name",
         "mobileNo",
+        "gender",
         "cnic",
         "email",
         "address",
@@ -122,6 +132,7 @@ const GenerateSalarySlip = async (parent, args) => {
         "commissionFlag",
         "commissionPercentage",
         [fn("SUM", col("Attendances.leave")), "currentMonthLeaves"], // Add SUM aggregation
+        [fn("SUM", col("Attendances.overtime")), "currentMonthOvertime"], // Add SUM aggregation
       ],
       include: [
         {
@@ -129,6 +140,18 @@ const GenerateSalarySlip = async (parent, args) => {
           as: "Salary",
           required: false,
           attributes: ["amount"],
+        },
+        {
+          model: Role,
+          required: false,
+          attributes: ["designation"],
+          include: [
+            {
+              model: Overtime,
+              required: false,
+              attributes: ["roleId", "gender", "rate"],
+            },
+          ],
         },
         {
           model: Attendance,
@@ -142,8 +165,12 @@ const GenerateSalarySlip = async (parent, args) => {
           },
         },
       ],
-      group: ["User.id", "Salary.id"],
+      group: ["User.id", "Salary.id", "Role.id", "Role->Overtimes.id"],
     });
+
+    const overtime = employee.Role.Overtimes.find(
+      (x) => x.gender === employee.gender
+    );
 
     let commissionAmount = 0;
     if (employee.commissionFlag) {
@@ -199,7 +226,15 @@ const GenerateSalarySlip = async (parent, args) => {
         : 0;
 
     const fine = leaves * (employee.Salary.amount / workingDays);
-
+    const overtimePay =
+      overtime.rate * employee.dataValues.currentMonthOvertime;
+    const totalPay =
+      employee.Salary.amount -
+      employee.Salary.amount * 0.6667 * 0.075 -
+      tax -
+      fine +
+      commissionAmount +
+      overtimePay;
     return {
       employeeId: employee.employeeId,
       name: employee.name,
@@ -210,11 +245,15 @@ const GenerateSalarySlip = async (parent, args) => {
       salary: employee.Salary.amount,
       basicSalary: employee.Salary.amount * 0.6667,
 
+      overtimePrice: overtime.rate,
+      overtimeHours: employee.dataValues.currentMonthOvertime,
       providentFund: employee.Salary.amount * 0.6667 * 0.075,
       tax: Math.round(tax),
       fine,
       extendedLeaves: leaves,
       commission: commissionAmount,
+      others: 0,
+      totalPay,
     };
   } catch (err) {
     console.error(err);

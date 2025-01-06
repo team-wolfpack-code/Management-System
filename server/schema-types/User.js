@@ -19,6 +19,7 @@ const UserType = new GraphQLObjectType({
     employeeId: { type: GraphQLString },
     name: { type: GraphQLString },
     mobileNo: { type: GraphQLString },
+    gender: { type: GraphQLString },
     cnic: { type: GraphQLString },
     email: { type: GraphQLString },
     password: { type: GraphQLString },
@@ -31,9 +32,10 @@ const UserType = new GraphQLObjectType({
     availableLeaves: { type: GraphQLFloat },
     commissionFlag: { type: GraphQLBoolean },
     commissionPercentage: { type: GraphQLFloat },
+    providentFund: { type: GraphQLFloat },
 
-    createdAt: { type: GraphQLString },
-    updatedAt: { type: GraphQLString },
+    createdAt: { type: GraphQLDate },
+    updatedAt: { type: GraphQLDate },
   }),
 });
 

@@ -1,5 +1,5 @@
 const graphql = require("graphql");
-
+const { GraphQLDate } = require("graphql-scalars");
 const { GraphQLObjectType, GraphQLString, GraphQLID } = graphql;
 
 const RoleType = new GraphQLObjectType({
@@ -10,8 +10,8 @@ const RoleType = new GraphQLObjectType({
     designation: { type: GraphQLString },
     description: { type: GraphQLString },
 
-    createdAt: { type: GraphQLString },
-    updatedAt: { type: GraphQLString },
+    createdAt: { type: GraphQLDate },
+    updatedAt: { type: GraphQLDate },
   }),
 });
 

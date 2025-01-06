@@ -82,6 +82,11 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
+      gender: {
+        type: DataTypes.ENUM,
+        values: ["Male", "Female", "Other"],
+        allowNull: false,
+      },
       cnic: {
         type: DataTypes.STRING,
         allowNull: false,
@@ -130,6 +135,10 @@ module.exports = (sequelize, DataTypes) => {
       },
       commissionPercentage: {
         type: DataTypes.DECIMAL,
+        allowNull: false,
+      },
+      providentFund: {
+        type: DataTypes.FLOAT,
         allowNull: false,
       },
 

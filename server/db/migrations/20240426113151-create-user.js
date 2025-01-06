@@ -50,6 +50,11 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false,
       },
+      gender: {
+        type: Sequelize.ENUM,
+        values: ["Male", "Female", "Other"],
+        allowNull: false,
+      },
       cnic: {
         type: Sequelize.STRING,
         allowNull: false,
@@ -99,6 +104,10 @@ module.exports = {
       },
       commissionPercentage: {
         type: Sequelize.DECIMAL,
+        allowNull: false,
+      },
+      providentFund: {
+        type: Sequelize.FLOAT,
         allowNull: false,
       },
       createdAt: {

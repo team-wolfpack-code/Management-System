@@ -34,6 +34,7 @@ const CreateAttendance = async (parent, args) => {
       tourHoliday,
       weekend,
       leave,
+      overtime,
     } = args;
 
     const attendance = await Attendance.create({
@@ -45,6 +46,7 @@ const CreateAttendance = async (parent, args) => {
       tourHoliday,
       weekend,
       leave,
+      overtime,
     });
     return attendance;
   } catch (err) {

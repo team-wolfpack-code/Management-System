@@ -18,11 +18,12 @@ module.exports = {
         },
       },
       gender: {
-        type: Sequelize.STRING,
+        type: Sequelize.ENUM,
+        values: ["Male", "Female", "Other"],
         allowNull: false,
       },
       rate: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.FLOAT,
         allowNull: false,
       },
       createdAt: {

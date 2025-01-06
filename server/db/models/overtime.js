@@ -21,12 +21,15 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
+
       gender: {
-        type: DataTypes.STRING,
+        type: DataTypes.ENUM,
+        values: ["Male", "Female", "Other"],
         allowNull: false,
       },
+
       rate: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.FLOAT,
         allowNull: false,
       },
     },

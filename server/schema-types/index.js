@@ -10,6 +10,7 @@ const InvoiceType = require("./Invoice");
 const RolePrivilegesType = require("./Role-Privileges");
 const { SalarySlipType, GenerateSalarySlipType } = require("./Salary-Slip");
 const TaxType = require("./Tax");
+const OvertimeType = require("./Overtime");
 
 module.exports = {
   ShiftType,
@@ -25,4 +26,5 @@ module.exports = {
   SalarySlipType,
   GenerateSalarySlipType,
   TaxType,
+  OvertimeType,
 };

@@ -48,6 +48,10 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.FLOAT,
         allowNull: false,
       },
+      overtime: {
+        type: DataTypes.FLOAT,
+        // allowNull: false,
+      },
     },
     {
       sequelize,
