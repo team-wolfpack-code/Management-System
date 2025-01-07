@@ -7,27 +7,28 @@ var { ruruHTML } = require("ruru/server");
 const cors = require("cors");
 
 const { connectDB } = require("./db/models");
-
+const cookieParser = require("cookie-parser");
 const app = express();
 const port = process.env.PORT;
-
 require("dotenv").config();
 //using cors
-app.use(cors());
+app.use(
+  cors({
+    credentials: true,
+  })
+);
+app.use(cookieParser());
 
 //if you want to use the body of request use a middle-ware:
 app.use(express.json());
-//and set the  header content-type as json
 
 // Available Routes:
-
-// Create and use the GraphQL handler.
-app.all(
-  "/graphql",
+app.all("/graphql", (req, res) => {
   createHandler({
     schema: schema,
-  })
-);
+    context: { req, res },
+  })(req, res);
+});
 
 // Serve the GraphiQL IDE.
 app.get("/", (_req, res) => {
