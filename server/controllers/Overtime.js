@@ -1,7 +1,8 @@
-const { db } = require("../db/models");
-const { Overtime } = db;
+const {
+  db: { Overtime },
+} = require("../db/models");
 
-const GetAllOvertimes = async () => {
+const GetAllOvertimes = async (parent) => {
   try {
     const overtimes = await Overtime.findAll({});
     return overtimes;

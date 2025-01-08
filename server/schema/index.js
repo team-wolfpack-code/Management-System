@@ -137,16 +137,14 @@ const RootQuery = new GraphQLObjectType({
     taxes: {
       type: new GraphQLList(TaxType),
       description: "List of all Taxes",
-      // resolve: (parent, args) => GetAllTaxes(),
-      resolve: authMiddleware(async () => {
-        return await GetAllTaxes();
+      resolve: authMiddleware(async (parent) => {
+        return await GetAllTaxes(parent);
       }),
     },
     tax: {
       type: TaxType,
       description: "A single Tax",
       args: { id: { type: new GraphQLNonNull(GraphQLID) } },
-      // resolve: (parent, args) => GetTaxById(parent, args),
       resolve: authMiddleware(async (parent, args) => {
         return await GetTaxById(parent, args);
       }),
@@ -156,16 +154,14 @@ const RootQuery = new GraphQLObjectType({
     shifts: {
       type: new GraphQLList(ShiftType),
       description: "List of all Shifts",
-      // resolve: (parent, args) => GetAllShifts(),
-      resolve: authMiddleware(async () => {
-        return await GetAllShifts();
+      resolve: authMiddleware(async (parent) => {
+        return await GetAllShifts(parent);
       }),
     },
     shift: {
       type: ShiftType,
       description: "A single Shift",
       args: { id: { type: new GraphQLNonNull(GraphQLID) } },
-      // resolve: (parent, args) => GetShiftById(parent, args),
       resolve: authMiddleware(async (parent, args) => {
         return await GetShiftById(parent, args);
       }),
@@ -175,16 +171,14 @@ const RootQuery = new GraphQLObjectType({
     departments: {
       type: new GraphQLList(DepartmentType),
       description: "List of all Departments",
-      // resolve: (parent, args) => GetAllDepartments(),
-      resolve: authMiddleware(async () => {
-        return await GetAllDepartments();
+      resolve: authMiddleware(async (parent) => {
+        return await GetAllDepartments(parent);
       }),
     },
     department: {
       type: DepartmentType,
       description: "A single Department",
       args: { id: { type: new GraphQLNonNull(GraphQLID) } },
-      // resolve: (parent, args) => GetDepartmentById(parent, args),
       resolve: authMiddleware(async (parent, args) => {
         return await GetDepartmentById(parent, args);
       }),
@@ -194,29 +188,31 @@ const RootQuery = new GraphQLObjectType({
     overtimes: {
       type: new GraphQLList(OvertimeType),
       description: "List of all Overtimes",
-      resolve: (parent, args) => GetAllOvertimes(),
+      resolve: authMiddleware(async (parent) => {
+        return await GetAllOvertimes(parent);
+      }),
     },
     overtime: {
       type: OvertimeType,
       description: "A single Overtime",
       args: { id: { type: new GraphQLNonNull(GraphQLID) } },
-      resolve: (parent, args) => GetOvertimeById(parent, args),
+      resolve: authMiddleware(async (parent, args) => {
+        return await GetOvertimeById(parent, args);
+      }),
     },
 
     // Role:
     roles: {
       type: new GraphQLList(RoleType),
       description: "List of all Roles",
-      // resolve: (parent, args) => GetAllRoles(),
-      resolve: authMiddleware(async () => {
-        return await GetAllRoles();
+      resolve: authMiddleware(async (parent) => {
+        return await GetAllRoles(parent);
       }),
     },
     role: {
       type: RoleType,
       description: "A single Role",
       args: { id: { type: new GraphQLNonNull(GraphQLID) } },
-      // resolve: (parent, args) => GetRoleById(parent, args),
       resolve: authMiddleware(async (parent, args) => {
         return await GetRoleById(parent, args);
       }),
@@ -226,16 +222,14 @@ const RootQuery = new GraphQLObjectType({
     users: {
       type: new GraphQLList(UserType),
       description: "List of all Users",
-      // resolve: (parent, args) => GetAllUsers(),
-      resolve: authMiddleware(async () => {
-        return await GetAllUsers();
+      resolve: authMiddleware(async (parent) => {
+        return await GetAllUsers(parent);
       }),
     },
     user: {
       type: UserType,
       description: "A single User",
       args: { id: { type: new GraphQLNonNull(GraphQLID) } },
-      // resolve: (parent, args) => GetUserById(parent, args),
       resolve: authMiddleware(async (parent, args) => {
         return await GetUserById(parent, args);
       }),
@@ -248,20 +242,19 @@ const RootQuery = new GraphQLObjectType({
         return await GetUserByCnic(parent, args);
       }),
     },
+
     // Salary:
     salaries: {
       type: new GraphQLList(SalaryType),
       description: "List of all Salaries",
-      // resolve: () => GetAllSalaries(),
-      resolve: authMiddleware(async () => {
-        return await GetAllSalaries();
+      resolve: authMiddleware(async (parent) => {
+        return await GetAllSalaries(parent);
       }),
     },
     salary: {
       type: SalaryType,
       description: "Salary of given id",
       args: { id: { type: new GraphQLNonNull(GraphQLID) } },
-      // resolve: (parent, args) => GetSalaryById(parent, args),
       resolve: authMiddleware(async (parent, args) => {
         return await GetSalaryById(parent, args);
       }),
@@ -271,16 +264,14 @@ const RootQuery = new GraphQLObjectType({
     attendances: {
       type: new GraphQLList(AttendanceType),
       description: "List of all Attendances",
-      // resolve: (parent, args) => GetAllAttendances(),
-      resolve: authMiddleware(async () => {
-        return await GetAllAttendances();
+      resolve: authMiddleware(async (parent) => {
+        return await GetAllAttendances(parent);
       }),
     },
     attendance: {
       type: AttendanceType,
       description: "Attendance of given id",
       args: { id: { type: new GraphQLNonNull(GraphQLID) } },
-      // resolve: (parent, args) => GetAttendanceById(parent, args),
       resolve: authMiddleware(async (parent, args) => {
         return await GetAttendanceById(parent, args);
       }),
@@ -290,16 +281,14 @@ const RootQuery = new GraphQLObjectType({
     projects: {
       type: new GraphQLList(ProjectType),
       description: "List of all Projects",
-      // resolve: (parent, args) => GetAllProjects(),
-      resolve: authMiddleware(async () => {
-        return await GetAllProjects();
+      resolve: authMiddleware(async (parent) => {
+        return await GetAllProjects(parent);
       }),
     },
     project: {
       type: ProjectType,
       description: "Project of given id",
       args: { id: { type: new GraphQLNonNull(GraphQLID) } },
-      // resolve: (parent, args) => GetProjectById(parent, args),
       resolve: authMiddleware(async (parent, args) => {
         return await GetProjectById(parent, args);
       }),
@@ -309,16 +298,14 @@ const RootQuery = new GraphQLObjectType({
     projectProgresses: {
       type: new GraphQLList(ProjectProgressType),
       description: "List of all Project Progresses",
-      // resolve: (parent, args) => GetAllProjectProgresses(),
-      resolve: authMiddleware(async () => {
-        return await GetAllProjectProgresses();
+      resolve: authMiddleware(async (parent) => {
+        return await GetAllProjectProgresses(parent);
       }),
     },
     projectProgress: {
       type: ProjectProgressType,
       description: "Project Progress of given id",
       args: { id: { type: new GraphQLNonNull(GraphQLID) } },
-      // resolve: (parent, args) => GetProjectProgressById(parent, args),
       resolve: authMiddleware(async (parent, args) => {
         return await GetProjectProgressById(parent, args);
       }),
@@ -328,16 +315,14 @@ const RootQuery = new GraphQLObjectType({
     invoices: {
       type: new GraphQLList(InvoiceType),
       description: "List of all Invoices",
-      // resolve: (parent, args) => GetAllInvoices(),
-      resolve: authMiddleware(async () => {
-        return await GetAllInvoices();
+      resolve: authMiddleware(async (parent) => {
+        return await GetAllInvoices(parent);
       }),
     },
     invoice: {
       type: InvoiceType,
       description: "Invoice of given id",
       args: { id: { type: new GraphQLNonNull(GraphQLID) } },
-      // resolve: (parent, args) => GetInvoiceById(parent, args),
       resolve: authMiddleware(async (parent, args) => {
         return await GetInvoiceById(parent, args);
       }),
@@ -347,16 +332,14 @@ const RootQuery = new GraphQLObjectType({
     rolePrivileges: {
       type: new GraphQLList(RolePrivilegesType),
       description: "List of all  Role Privileges",
-      // resolve: (parent, args) => GetAllRolePrivileges(),
-      resolve: authMiddleware(async () => {
-        return await GetAllRolePrivileges();
+      resolve: authMiddleware(async (parent) => {
+        return await GetAllRolePrivileges(parent);
       }),
     },
     rolePrivilege: {
       type: RolePrivilegesType,
       description: "Role Privileges of given id",
       args: { id: { type: new GraphQLNonNull(GraphQLID) } },
-      // resolve: (parent, args) => GetRolePrivilegeById(parent, args),
       resolve: authMiddleware(async (parent, args) => {
         return await GetRolePrivilegeById(parent, args);
       }),
@@ -366,16 +349,14 @@ const RootQuery = new GraphQLObjectType({
     salarySlips: {
       type: new GraphQLList(SalarySlipType),
       description: "List of all Salary Slips",
-      // resolve: (parent, args) => GetAllSalarySlips(),
-      resolve: authMiddleware(async () => {
-        return await GetAllSalarySlips();
+      resolve: authMiddleware(async (parent) => {
+        return await GetAllSalarySlips(parent);
       }),
     },
     salarySlip: {
       type: SalarySlipType,
       description: "Salary Slip of given id",
       args: { id: { type: new GraphQLNonNull(GraphQLID) } },
-      // resolve: (parent, args) => GetSalarySlipById(parent, args),
       resolve: authMiddleware(async (parent, args) => {
         return await GetSalarySlipById(parent, args);
       }),
@@ -396,7 +377,6 @@ const Mutation = new GraphQLObjectType({
         taxRate: { type: new GraphQLNonNull(GraphQLFloat) },
         taxAmount: { type: new GraphQLNonNull(GraphQLInt) },
       },
-      // resolve: (parent, args) => CreateTax(parent, args),
       resolve: authMiddleware(async (parent, args) => {
         return await CreateTax(parent, args);
       }),
@@ -411,7 +391,6 @@ const Mutation = new GraphQLObjectType({
         taxRate: { type: GraphQLFloat },
         taxAmount: { type: GraphQLInt },
       },
-      // resolve: (parent, args) => UpdateTax(parent, args),
       resolve: authMiddleware(async (parent, args) => {
         return await UpdateTax(parent, args);
       }),
@@ -422,7 +401,6 @@ const Mutation = new GraphQLObjectType({
       args: {
         id: { type: new GraphQLNonNull(GraphQLID) },
       },
-      // resolve: (parent, args) => DeleteTax(parent, args),
       resolve: authMiddleware(async (parent, args) => {
         return await DeleteTax(parent, args);
       }),
@@ -437,7 +415,6 @@ const Mutation = new GraphQLObjectType({
         startTime: { type: new GraphQLNonNull(GraphQLLocalTime) },
         endTime: { type: new GraphQLNonNull(GraphQLLocalTime) },
       },
-      // resolve: (parent, args) => AddShift(parent, args),
       resolve: authMiddleware(async (parent, args) => {
         return await AddShift(parent, args);
       }),
@@ -451,7 +428,6 @@ const Mutation = new GraphQLObjectType({
         startTime: { type: GraphQLLocalTime },
         endTime: { type: GraphQLLocalTime },
       },
-      // resolve: (parent, args) => UpdateShift(parent, args),
       resolve: authMiddleware(async (parent, args) => {
         return await UpdateShift(parent, args);
       }),
@@ -462,7 +438,6 @@ const Mutation = new GraphQLObjectType({
       args: {
         id: { type: new GraphQLNonNull(GraphQLID) },
       },
-      // resolve: (parent, args) => DeleteShift(parent, args),
       resolve: authMiddleware(async (parent, args) => {
         return await DeleteShift(parent, args);
       }),
@@ -477,7 +452,6 @@ const Mutation = new GraphQLObjectType({
         departmentName: { type: new GraphQLNonNull(GraphQLNonEmptyString) },
         employeeCount: { type: new GraphQLNonNull(GraphQLInt) },
       },
-      // resolve: (parent, args) => AddDepartment(parent, args),
       resolve: authMiddleware(async (parent, args) => {
         return await AddDepartment(parent, args);
       }),
@@ -491,7 +465,6 @@ const Mutation = new GraphQLObjectType({
         departmentName: { type: GraphQLNonEmptyString },
         employeeCount: { type: GraphQLInt },
       },
-      // resolve: (parent, args) => UpdateDepartment(parent, args),
       resolve: authMiddleware(async (parent, args) => {
         return await UpdateDepartment(parent, args);
       }),
@@ -502,7 +475,6 @@ const Mutation = new GraphQLObjectType({
       args: {
         id: { type: new GraphQLNonNull(GraphQLID) },
       },
-      // resolve: (parent, args) => DeleteDepartment(parent, args),
       resolve: authMiddleware(async (parent, args) => {
         return await DeleteDepartment(parent, args);
       }),
@@ -517,7 +489,6 @@ const Mutation = new GraphQLObjectType({
         designation: { type: new GraphQLNonNull(GraphQLNonEmptyString) },
         description: { type: new GraphQLNonNull(GraphQLNonEmptyString) },
       },
-      // resolve: (parent, args) => AddRole(parent, args),
       resolve: authMiddleware(async (parent, args) => {
         return await AddRole(parent, args);
       }),
@@ -531,7 +502,6 @@ const Mutation = new GraphQLObjectType({
         designation: { type: GraphQLNonEmptyString },
         description: { type: GraphQLNonEmptyString },
       },
-      // resolve: (parent, args) => UpdateRole(parent, args),
       resolve: authMiddleware(async (parent, args) => {
         return await UpdateRole(parent, args);
       }),
@@ -542,7 +512,6 @@ const Mutation = new GraphQLObjectType({
       args: {
         id: { type: new GraphQLNonNull(GraphQLID) },
       },
-      // resolve: (parent, args) => DeleteRole(parent, args),
       resolve: authMiddleware(async (parent, args) => {
         return await DeleteRole(parent, args);
       }),
@@ -557,7 +526,9 @@ const Mutation = new GraphQLObjectType({
         gender: { type: new GraphQLNonNull(GraphQLNonEmptyString) },
         rate: { type: new GraphQLNonNull(GraphQLFloat) },
       },
-      resolve: (parent, args) => AddOvertime(parent, args),
+      resolve: authMiddleware(async (parent, args) => {
+        return await AddOvertime(parent, args);
+      }),
     },
     updateOvertime: {
       type: GraphQLString,
@@ -568,7 +539,9 @@ const Mutation = new GraphQLObjectType({
         gender: { type: GraphQLNonEmptyString },
         rate: { type: GraphQLFloat },
       },
-      resolve: (parent, args) => UpdateOvertime(parent, args),
+      resolve: authMiddleware(async (parent, args) => {
+        return await UpdateOvertime(parent, args);
+      }),
     },
     deleteOvertime: {
       type: GraphQLString,
@@ -576,7 +549,9 @@ const Mutation = new GraphQLObjectType({
       args: {
         id: { type: new GraphQLNonNull(GraphQLID) },
       },
-      resolve: (parent, args) => DeleteOvertime(parent, args),
+      resolve: authMiddleware(async (parent, args) => {
+        return await DeleteOvertime(parent, args);
+      }),
     },
 
     // User:
@@ -609,7 +584,6 @@ const Mutation = new GraphQLObjectType({
           type: new GraphQLNonNull(GraphQLFloat),
         },
       },
-      // resolve: (parent, args) => AddUser(parent, args),
       resolve: authMiddleware(async (parent, args) => {
         return await AddUser(parent, args);
       }),
@@ -644,7 +618,6 @@ const Mutation = new GraphQLObjectType({
           type: GraphQLFloat,
         },
       },
-      // resolve: (parent, args) => UpdateUser(parent, args),
       resolve: authMiddleware(async (parent, args) => {
         return await UpdateUser(parent, args);
       }),
@@ -655,7 +628,6 @@ const Mutation = new GraphQLObjectType({
       args: {
         id: { type: new GraphQLNonNull(GraphQLID) },
       },
-      // resolve: (parent, args) => DeleteUser(parent, args),
       resolve: authMiddleware(async (parent, args) => {
         return await DeleteUser(parent, args);
       }),
@@ -683,7 +655,6 @@ const Mutation = new GraphQLObjectType({
           type: new GraphQLNonNull(GraphQLFloat),
         },
       },
-      // resolve: (parent, args) => CreateSalary(parent, args),
       resolve: authMiddleware(async (parent, args) => {
         return await CreateSalary(parent, args);
       }),
@@ -701,7 +672,6 @@ const Mutation = new GraphQLObjectType({
           type: GraphQLFloat,
         },
       },
-      // resolve: (parent, args) => UpdateSalary(parent, args),
       resolve: authMiddleware(async (parent, args) => {
         return await UpdateSalary(parent, args);
       }),
@@ -712,7 +682,6 @@ const Mutation = new GraphQLObjectType({
       args: {
         id: { type: new GraphQLNonNull(GraphQLID) },
       },
-      // resolve: (parent, args) => DeleteSalary(parent, args),
       resolve: authMiddleware(async (parent, args) => {
         return await DeleteSalary(parent, args);
       }),
@@ -743,7 +712,6 @@ const Mutation = new GraphQLObjectType({
           type: GraphQLFloat,
         },
       },
-      // resolve: (parent, args) => CreateAttendance(parent, args),
       resolve: authMiddleware(async (parent, args) => {
         return await CreateAttendance(parent, args);
       }),
@@ -773,7 +741,6 @@ const Mutation = new GraphQLObjectType({
           type: GraphQLFloat,
         },
       },
-      // resolve: (parent, args) => UpdateAttendance(parent, args),
       resolve: authMiddleware(async (parent, args) => {
         return await UpdateAttendance(parent, args);
       }),
@@ -784,7 +751,6 @@ const Mutation = new GraphQLObjectType({
       args: {
         id: { type: new GraphQLNonNull(GraphQLID) },
       },
-      // resolve: (parent, args) => DeleteAttendance(parent, args),
       resolve: authMiddleware(async (parent, args) => {
         return await DeleteAttendance(parent, args);
       }),
@@ -814,7 +780,6 @@ const Mutation = new GraphQLObjectType({
         b2bFlag: { type: new GraphQLNonNull(GraphQLBoolean) },
         milestones: { type: new GraphQLNonNull(GraphQLInt) },
       },
-      // resolve: (parent, args) => CreateProject(parent, args),
       resolve: authMiddleware(async (parent, args) => {
         return await CreateProject(parent, args);
       }),
@@ -841,7 +806,6 @@ const Mutation = new GraphQLObjectType({
         b2bFlag: { type: GraphQLBoolean },
         milestones: { type: GraphQLInt },
       },
-      // resolve: (parent, args) => UpdateProject(parent, args),
       resolve: authMiddleware(async (parent, args) => {
         return await UpdateProject(parent, args);
       }),
@@ -852,7 +816,6 @@ const Mutation = new GraphQLObjectType({
       args: {
         id: { type: new GraphQLNonNull(GraphQLID) },
       },
-      // resolve: (parent, args) => DeleteProject(parent, args),
       resolve: authMiddleware(async (parent, args) => {
         return await DeleteProject(parent, args);
       }),
@@ -872,7 +835,6 @@ const Mutation = new GraphQLObjectType({
         startTime: { type: new GraphQLNonNull(GraphQLLocalTime) },
         endTime: { type: new GraphQLNonNull(GraphQLLocalTime) },
       },
-      // resolve: (parent, args) => CreateProjectProgress(parent, args),
       resolve: authMiddleware(async (parent, args) => {
         return await CreateProjectProgress(parent, args);
       }),
@@ -891,7 +853,6 @@ const Mutation = new GraphQLObjectType({
         startTime: { type: GraphQLLocalTime },
         endTime: { type: GraphQLLocalTime },
       },
-      // resolve: (parent, args) => UpdateProjectProgress(parent, args),
       resolve: authMiddleware(async (parent, args) => {
         return await UpdateProjectProgress(parent, args);
       }),
@@ -902,7 +863,6 @@ const Mutation = new GraphQLObjectType({
       args: {
         id: { type: new GraphQLNonNull(GraphQLID) },
       },
-      // resolve: (parent, args) => DeleteProjectProgress(parent, args),
       resolve: authMiddleware(async (parent, args) => {
         return await DeleteProjectProgress(parent, args);
       }),
@@ -920,7 +880,6 @@ const Mutation = new GraphQLObjectType({
         status: { type: new GraphQLNonNull(GraphQLNonEmptyString) },
         taxAmount: { type: new GraphQLNonNull(GraphQLFloat) },
       },
-      // resolve: (parent, args) => CreateInvoice(parent, args),
       resolve: authMiddleware(async (parent, args) => {
         return await CreateInvoice(parent, args);
       }),
@@ -937,7 +896,6 @@ const Mutation = new GraphQLObjectType({
         status: { type: GraphQLNonEmptyString },
         taxAmount: { type: GraphQLFloat },
       },
-      // resolve: (parent, args) => UpdateInvoice(parent, args),
       resolve: authMiddleware(async (parent, args) => {
         return await UpdateInvoice(parent, args);
       }),
@@ -948,7 +906,6 @@ const Mutation = new GraphQLObjectType({
       args: {
         id: { type: new GraphQLNonNull(GraphQLID) },
       },
-      // resolve: (parent, args) => DeleteInvoice(parent, args),
       resolve: authMiddleware(async (parent, args) => {
         return await DeleteInvoice(parent, args);
       }),
@@ -965,7 +922,6 @@ const Mutation = new GraphQLObjectType({
         canUpdate: { type: new GraphQLList(GraphQLID) },
         canDelete: { type: new GraphQLList(GraphQLID) },
       },
-      // resolve: (parent, args) => CreateRolePrivilege(parent, args),
       resolve: authMiddleware(async (parent, args) => {
         return await CreateRolePrivilege(parent, args);
       }),
@@ -981,7 +937,6 @@ const Mutation = new GraphQLObjectType({
         canUpdate: { type: new GraphQLList(GraphQLID) },
         canDelete: { type: new GraphQLList(GraphQLID) },
       },
-      // resolve: (parent, args) => UpdateRolePrivilege(parent, args),
       resolve: authMiddleware(async (parent, args) => {
         return await UpdateRolePrivilege(parent, args);
       }),
@@ -992,7 +947,6 @@ const Mutation = new GraphQLObjectType({
       args: {
         id: { type: new GraphQLNonNull(GraphQLID) },
       },
-      // resolve: (parent, args) => DeleteRolePrivilege(parent, args),
       resolve: authMiddleware(async (parent, args) => {
         return await DeleteRolePrivilege(parent, args);
       }),
@@ -1018,7 +972,6 @@ const Mutation = new GraphQLObjectType({
         others: { type: new GraphQLNonNull(GraphQLFloat) },
         totalPay: { type: new GraphQLNonNull(GraphQLFloat) },
       },
-      // resolve: (parent, args) => CreateSalarySlip(parent, args),
       resolve: authMiddleware(async (parent, args) => {
         return await CreateSalarySlip(parent, args);
       }),
@@ -1043,7 +996,6 @@ const Mutation = new GraphQLObjectType({
         others: { type: GraphQLFloat },
         totalPay: { type: GraphQLFloat },
       },
-      // resolve: (parent, args) => UpdateSalarySlip(parent, args),
       resolve: authMiddleware(async (parent, args) => {
         return await UpdateSalarySlip(parent, args);
       }),
@@ -1054,7 +1006,6 @@ const Mutation = new GraphQLObjectType({
       args: {
         id: { type: new GraphQLNonNull(GraphQLID) },
       },
-      // resolve: (parent, args) => DeleteSalarySlip(parent, args),
       resolve: authMiddleware(async (parent, args) => {
         return await DeleteSalarySlip(parent, args);
       }),
@@ -1066,7 +1017,6 @@ const Mutation = new GraphQLObjectType({
       args: {
         employeeId: { type: new GraphQLNonNull(GraphQLID) },
       },
-      // resolve: (parent, args) => GenerateSalarySlip(parent, args),
       resolve: authMiddleware(async (parent, args) => {
         return await GenerateSalarySlip(parent, args);
       }),

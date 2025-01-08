@@ -1,8 +1,9 @@
 const { Op } = require("sequelize");
-const { db } = require("../db/models");
-const { Tax } = db;
+const {
+  db: { Tax },
+} = require("../db/models");
 
-const GetAllTaxes = async () => {
+const GetAllTaxes = async (parent) => {
   try {
     const taxes = await Tax.findAll({});
     return taxes;

@@ -1,14 +1,16 @@
-const { db } = require("../db/models");
 const {
-  Salary_Slip,
-  Salary,
-  User,
-  Attendance,
-  Project,
-  Project_Progress,
-  Role,
-  Overtime,
-} = db;
+  db: {
+    Salary_Slip,
+    Salary,
+    User,
+    Attendance,
+    Project,
+    Project_Progress,
+    Role,
+    Overtime,
+  },
+} = require("../db/models");
+
 const {
   endOfMonth,
   startOfMonth,
@@ -19,7 +21,7 @@ const {
 const { CalculateTax } = require("./Tax");
 const { Op, fn, col } = require("sequelize");
 
-const GetAllSalarySlips = async () => {
+const GetAllSalarySlips = async (parent) => {
   try {
     const salarySlips = await Salary_Slip.findAll({});
     return salarySlips;

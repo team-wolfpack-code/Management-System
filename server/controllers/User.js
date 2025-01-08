@@ -1,9 +1,10 @@
-const { db } = require("../db/models");
-const { User } = db;
+const {
+  db: { User },
+} = require("../db/models");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 
-const GetAllUsers = async () => {
+const GetAllUsers = async (parent) => {
   try {
     const users = await User.findAll({});
     return users;

@@ -1,22 +1,9 @@
-const graphql = require("graphql");
-
-const { db } = require("../db/models");
-const { Shift } = db;
-// const { ShiftType } = require("../schema-types");
-// const error = require("../utils/error");
-
-// const {
-//   GraphQLObjectType,
-//   GraphQLSchema,
-//   GraphQLString,
-//   GraphQLID,
-//   GraphQLInt,
-//   GraphQLList,
-//   GraphQLNonNull, // Used for making a field required.
-// } = graphql;
+const {
+  db: { Shift },
+} = require("../db/models");
 
 // Get All Shifts:
-const GetAllShifts = async () => {
+const GetAllShifts = async (parent) => {
   try {
     const shifts = await Shift.findAll({});
     return shifts;

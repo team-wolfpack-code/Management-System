@@ -1,7 +1,8 @@
-const { db } = require("../db/models");
-const { Project } = db;
+const {
+  db: { Project },
+} = require("../db/models");
 
-const GetAllProjects = async () => {
+const GetAllProjects = async (parent) => {
   try {
     const projects = await Project.findAll({});
     return projects;
@@ -25,22 +26,10 @@ const GetProjectById = async (parent, args) => {
 
 const CreateProject = async (parent, args) => {
   try {
-    // const {
-    //   employeeId,
-    //   date,
-    //   inTime,
-    //   outTime,
-    //   publicHoliday,
-    //   tourHoliday,
-    //   weekend,
-    //   leave,
-    // } = args;
-
     const project = await Project.create(args);
     return project;
   } catch (err) {
-    console.error("-------->", err);
-    console.error("-------->", err?.parent?.message);
+    console.error(err);
     if (err.parent.code === "23505") {
       throw Error(err.errors[0].message);
     } else if (err.parent.code === "23503") {

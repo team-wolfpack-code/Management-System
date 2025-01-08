@@ -1,7 +1,8 @@
-const { db } = require("../db/models");
-const { Project_Progress } = db;
+const {
+  db: { Project_Progress },
+} = require("../db/models");
 
-const GetAllProjectProgresses = async () => {
+const GetAllProjectProgresses = async (parent) => {
   try {
     const projectProgresses = await Project_Progress.findAll({});
     return projectProgresses;

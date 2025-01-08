@@ -1,7 +1,8 @@
-const { db } = require("../db/models");
-const { Invoice } = db;
+const {
+  db: { Invoice },
+} = require("../db/models");
 
-const GetAllInvoices = async () => {
+const GetAllInvoices = async (parent) => {
   try {
     const invoices = await Invoice.findAll({});
     return invoices;

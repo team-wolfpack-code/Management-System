@@ -1,7 +1,8 @@
-const { db } = require("../db/models");
-const { Role } = db;
+const {
+  db: { Role },
+} = require("../db/models");
 
-const GetAllRoles = async () => {
+const GetAllRoles = async (parent) => {
   try {
     const roles = await Role.findAll({});
     return roles;

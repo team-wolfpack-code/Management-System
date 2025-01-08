@@ -1,7 +1,8 @@
-const { db } = require("../db/models");
-const { Salary } = db;
+const {
+  db: { Salary },
+} = require("../db/models");
 
-const GetAllSalaries = async () => {
+const GetAllSalaries = async (parent) => {
   try {
     const salaries = await Salary.findAll({});
     return salaries;

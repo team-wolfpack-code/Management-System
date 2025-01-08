@@ -1,7 +1,8 @@
-const { db } = require("../db/models");
-const { Attendance } = db;
+const {
+  db: { Attendance },
+} = require("../db/models");
 
-const GetAllAttendances = async () => {
+const GetAllAttendances = async (parent) => {
   try {
     const attendances = await Attendance.findAll({});
     return attendances;

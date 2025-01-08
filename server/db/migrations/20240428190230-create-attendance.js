@@ -52,7 +52,6 @@ module.exports = {
         },
         overtime: {
           type: Sequelize.FLOAT,
-          // allowNull: false,
         },
         createdAt: {
           allowNull: false,
