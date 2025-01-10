@@ -2,10 +2,11 @@ const { Op } = require("sequelize");
 const {
   db: { Tax },
 } = require("../db/models");
+const { GraphQLError } = require("graphql");
 
 const GetAllTaxes = async (parent) => {
   try {
-    const taxes = await Tax.findAll({});
+    const taxes = await Tax.findAll();
     return taxes;
   } catch (err) {
     console.error(err);
@@ -30,14 +31,13 @@ const CreateTax = async (parent, args) => {
     const tax = await Tax.create(args);
     return tax;
   } catch (err) {
-    console.error(err);
-    if (err.parent.code === "23505") {
-      throw Error(err.errors[0].message);
-    } else if (err.parent.code === "23503") {
-      throw Error(err.parent.detail);
-    } else {
-      throw Error(err);
-    }
+    console.error("-------->", err);
+    throw new GraphQLError(err.parent.detail, {
+      extensions: {
+        code: err.parent.code,
+        originalError: err.name,
+      },
+    });
   }
 };
 

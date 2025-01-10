@@ -20,10 +20,11 @@ const {
 } = require("date-fns");
 const { CalculateTax } = require("./Tax");
 const { Op, fn, col } = require("sequelize");
+const { GraphQLError } = require("graphql");
 
 const GetAllSalarySlips = async (parent) => {
   try {
-    const salarySlips = await Salary_Slip.findAll({});
+    const salarySlips = await Salary_Slip.findAll();
     return salarySlips;
   } catch (err) {
     console.error(err);
@@ -48,14 +49,13 @@ const CreateSalarySlip = async (parent, args) => {
     const salarySlip = await Salary_Slip.create(args);
     return salarySlip;
   } catch (err) {
-    console.error("-------->", err.parent.message);
-    if (err.parent.code === "23505") {
-      throw Error(err.errors[0].message);
-    } else if (err.parent.code === "23503") {
-      throw Error(err.parent.detail);
-    } else {
-      throw Error(err);
-    }
+    console.error("-------->", err);
+    throw new GraphQLError(err.parent.detail, {
+      extensions: {
+        code: err.parent.code,
+        originalError: err.name,
+      },
+    });
   }
 };
 

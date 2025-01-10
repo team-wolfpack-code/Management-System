@@ -40,21 +40,21 @@ const {
   AddShift,
   UpdateShift,
   DeleteShift,
-} = require("../controllers/Shift");
+} = require("../resolvers/Shift");
 const {
   GetAllDepartments,
   GetDepartmentById,
   AddDepartment,
   UpdateDepartment,
   DeleteDepartment,
-} = require("../controllers/Department");
+} = require("../resolvers/Department");
 const {
   GetAllRoles,
   GetRoleById,
   AddRole,
   UpdateRole,
   DeleteRole,
-} = require("../controllers/Role");
+} = require("../resolvers/Role");
 const {
   GetUserById,
   GetUserByCnic,
@@ -63,49 +63,49 @@ const {
   DeleteUser,
   AddUser,
   loginUser,
-} = require("../controllers/User");
+} = require("../resolvers/User");
 const {
   GetAllSalaries,
   GetSalaryById,
   CreateSalary,
   UpdateSalary,
   DeleteSalary,
-} = require("../controllers/Salary");
+} = require("../resolvers/Salary");
 const {
   GetAllAttendances,
   GetAttendanceById,
   UpdateAttendance,
   DeleteAttendance,
   CreateAttendance,
-} = require("../controllers/Attendance");
+} = require("../resolvers/Attendance");
 const {
   GetAllProjects,
   GetProjectById,
   CreateProject,
   UpdateProject,
   DeleteProject,
-} = require("../controllers/Project");
+} = require("../resolvers/Project");
 const {
   GetAllProjectProgresses,
   GetProjectProgressById,
   DeleteProjectProgress,
   UpdateProjectProgress,
   CreateProjectProgress,
-} = require("../controllers/Project-Progress");
+} = require("../resolvers/Project-Progress");
 const {
   GetAllInvoices,
   GetInvoiceById,
   DeleteInvoice,
   UpdateInvoice,
   CreateInvoice,
-} = require("../controllers/Invoice");
+} = require("../resolvers/Invoice");
 const {
   GetAllRolePrivileges,
   GetRolePrivilegeById,
   DeleteRolePrivilege,
   UpdateRolePrivilege,
   CreateRolePrivilege,
-} = require("../controllers/Role-Privileges");
+} = require("../resolvers/Role-Privileges");
 const {
   GetAllSalarySlips,
   GetSalarySlipById,
@@ -113,21 +113,21 @@ const {
   UpdateSalarySlip,
   CreateSalarySlip,
   GenerateSalarySlip,
-} = require("../controllers/Salary-Slip");
+} = require("../resolvers/Salary-Slip");
 const {
   GetAllTaxes,
   GetTaxById,
   CreateTax,
   UpdateTax,
   DeleteTax,
-} = require("../controllers/Tax");
+} = require("../resolvers/Tax");
 const {
   AddOvertime,
   UpdateOvertime,
   DeleteOvertime,
   GetAllOvertimes,
   GetOvertimeById,
-} = require("../controllers/Overtime");
+} = require("../resolvers/Overtime");
 
 const authMiddleware = require("../middleware/auth");
 const RootQuery = new GraphQLObjectType({

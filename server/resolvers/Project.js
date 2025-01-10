@@ -1,10 +1,11 @@
+const { GraphQLError } = require("graphql");
 const {
   db: { Project },
 } = require("../db/models");
 
 const GetAllProjects = async (parent) => {
   try {
-    const projects = await Project.findAll({});
+    const projects = await Project.findAll();
     return projects;
   } catch (err) {
     console.error(err);
@@ -29,25 +30,38 @@ const CreateProject = async (parent, args) => {
     const project = await Project.create(args);
     return project;
   } catch (err) {
-    console.error(err);
-    if (err.parent.code === "23505") {
-      throw Error(err.errors[0].message);
-    } else if (err.parent.code === "23503") {
-      throw Error(err.parent.detail);
-    } else if (err.parent.code === "22P02") {
+    console.error("-------->", err);
+    if (err.parent.code === "22P02") {
       if (err.parent.message.includes("enum_Projects_status")) {
-        throw Error(
-          "The status value can only be 'Pending', 'In-progress', 'Completed', or 'Cancelled'."
+        throw GraphQLError(
+          "The status value can only be 'Pending', 'In-progress', 'Completed', or 'Cancelled'.",
+          {
+            extensions: {
+              code: err.parent.code,
+              originalError: err.name,
+            },
+          }
         );
       } else if (err.parent.message.includes("enum_Projects_platform")) {
-        throw Error(
-          "The platform value can only be 'Upwork', 'Fiver', 'Toptal', 'Freelancer', 'LinkedIn', or 'B2B'."
+        throw GraphQLError(
+          "The platform value can only be 'Upwork', 'Fiver', 'Toptal', 'Freelancer', 'LinkedIn', or 'B2B'.",
+          {
+            extensions: {
+              code: err.parent.code,
+              originalError: err.name,
+            },
+          }
         );
       } else {
         throw Error(err);
       }
     } else {
-      throw Error(err);
+      throw new GraphQLError(err.parent.detail, {
+        extensions: {
+          code: err.parent.code,
+          originalError: err.name,
+        },
+      });
     }
   }
 };

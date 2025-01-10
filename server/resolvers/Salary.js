@@ -1,10 +1,11 @@
+const { GraphQLError } = require("graphql");
 const {
   db: { Salary },
 } = require("../db/models");
 
 const GetAllSalaries = async (parent) => {
   try {
-    const salaries = await Salary.findAll({});
+    const salaries = await Salary.findAll();
     return salaries;
   } catch (err) {
     console.error(err);
@@ -43,14 +44,13 @@ const CreateSalary = async (parent, args) => {
     });
     return salary;
   } catch (err) {
-    console.error(err);
-    if (err.parent.code === "23505") {
-      throw Error(err.errors[0].message);
-    } else if (err.parent.code === "23503") {
-      throw Error(err.parent.detail);
-    } else {
-      throw Error(err);
-    }
+    console.error("-------->", err);
+    throw new GraphQLError(err.parent.detail, {
+      extensions: {
+        code: err.parent.code,
+        originalError: err.name,
+      },
+    });
   }
 };
 

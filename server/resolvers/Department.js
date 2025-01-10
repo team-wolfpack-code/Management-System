@@ -1,10 +1,11 @@
+const { GraphQLError } = require("graphql");
 const {
   db: { Department },
 } = require("../db/models");
 
 const GetAllDepartments = async (parent) => {
   try {
-    const departments = await Department.findAll({});
+    const departments = await Department.findAll();
     return departments;
   } catch (err) {
     console.error(err);
@@ -17,10 +18,7 @@ const GetDepartmentById = async (parent, args) => {
     const department = await Department.findOne({
       where: { id: args.id },
     });
-    // if (shift) {
     return department;
-    // }
-    // return { message: "There isn't any Shift of this id exist." };
   } catch (err) {
     console.error(err);
     throw Error(err);
@@ -36,13 +34,12 @@ const AddDepartment = async (parent, args) => {
     return department;
   } catch (err) {
     console.error(err);
-    if (err.parent.code === "23505") {
-      throw Error(err.errors[0].message);
-    } else if (err.parent.code === "23503") {
-      throw Error(err.parent.detail);
-    } else {
-      throw Error(err);
-    }
+    throw new GraphQLError(err.parent.detail, {
+      extensions: {
+        code: err.parent.code,
+        originalError: err.name,
+      },
+    });
   }
 };
 
