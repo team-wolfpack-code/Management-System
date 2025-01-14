@@ -25,15 +25,19 @@ module.exports = (sequelize, DataTypes) => {
       },
       amount: {
         type: DataTypes.INTEGER,
+        allowNull: false,
       },
       effectiveDate: {
         type: DataTypes.DATE,
+        allowNull: false,
       },
       incrementDate: {
         type: DataTypes.DATE,
+        allowNull: false,
       },
       incrementPercentage: {
         type: DataTypes.INTEGER,
+        allowNull: false,
       },
     },
     {

@@ -21,30 +21,63 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
-      salary: {
-        type: DataTypes.INTEGER,
-      },
-      overtime: {
-        type: DataTypes.INTEGER,
-      },
       date: {
-        type: DataTypes.DATE,
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      workingDays: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+      },
+      salary: {
+        type: DataTypes.FLOAT,
+        allowNull: false,
+      },
+      basicSalary: {
+        type: DataTypes.FLOAT,
+        allowNull: false,
+      },
+      overtimePrice: {
+        type: DataTypes.FLOAT,
+        allowNull: false,
+      },
+      overtimeHours: {
+        type: DataTypes.FLOAT,
+        allowNull: false,
+      },
+      commission: {
+        type: DataTypes.FLOAT,
+        allowNull: false,
+      },
+      extendedLeaves: {
+        type: DataTypes.FLOAT,
+        allowNull: false,
+      },
+      fine: {
+        type: DataTypes.FLOAT,
+        allowNull: false,
+      },
+      tax: {
+        type: DataTypes.FLOAT,
+        allowNull: false,
+      },
+      providentFund: {
+        type: DataTypes.FLOAT,
+        allowNull: false,
+      },
+      others: {
+        type: DataTypes.FLOAT,
+        allowNull: false,
       },
       totalPay: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.FLOAT,
+        allowNull: false,
       },
     },
+
     {
       sequelize,
       modelName: "Salary_Slip",
-
-      // Define a unique constraint for the combination of EmployeeId and Date
-      indexes: [
-        {
-          unique: true,
-          fields: ["employeeId", "date"],
-        },
-      ],
     }
   );
   return Salary_Slip;

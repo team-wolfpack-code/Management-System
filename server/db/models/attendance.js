@@ -22,7 +22,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       },
       date: {
-        type: DataTypes.DATE,
+        type: DataTypes.DATEONLY,
         allowNull: false,
       },
       inTime: {
@@ -45,8 +45,11 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       },
       leave: {
-        type: DataTypes.BOOLEAN,
+        type: DataTypes.FLOAT,
         allowNull: false,
+      },
+      overtime: {
+        type: DataTypes.FLOAT,
       },
     },
     {

@@ -1,11 +1,13 @@
-const { db } = require("../db/models");
-const { User } = db;
+const {
+  db: { User },
+} = require("../db/models");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
+const { GraphQLError } = require("graphql");
 
-const GetAllUsers = async () => {
+const GetAllUsers = async (parent) => {
   try {
-    const users = await User.findAll({});
+    const users = await User.findAll();
     return users;
   } catch (err) {
     console.error(err);
@@ -46,6 +48,7 @@ const AddUser = async (parent, args) => {
       employeeId,
       name,
       mobileNo,
+      gender,
       cnic,
       email,
       password,
@@ -58,6 +61,7 @@ const AddUser = async (parent, args) => {
       availableLeaves,
       commissionFlag,
       commissionPercentage,
+      providentFund,
     } = args;
     const salt = await bcrypt.genSalt(30);
     const secretPassword = await bcrypt.hash(password, salt);
@@ -68,6 +72,7 @@ const AddUser = async (parent, args) => {
       employeeId,
       name,
       mobileNo,
+      gender,
       cnic,
       email,
       password: secretPassword,
@@ -80,21 +85,42 @@ const AddUser = async (parent, args) => {
       availableLeaves,
       commissionFlag,
       commissionPercentage,
+      providentFund,
     });
     return user;
   } catch (err) {
-    console.error("hello-------->", err);
-    if (err.parent.code === "23505") {
-      throw Error(err.errors[0].message);
-    } else if (err.parent.code === "23503") {
-      throw Error(err.parent.detail);
-    }
+    console.error("-------->", err);
     if (err.parent.code === "22P02") {
-      throw Error(
-        "The status value can only be 'Active', 'Terminated', or 'Deceased'."
-      );
+      if (err.parent.message.includes("enum_Users_status")) {
+        throw GraphQLError(
+          "The status value can only be 'Active', 'Terminated', or 'Deceased'.",
+          {
+            extensions: {
+              code: err.parent.code,
+              originalError: err.name,
+            },
+          }
+        );
+      } else if (err.parent.message.includes("enum_Users_gender")) {
+        throw GraphQLError(
+          "The gender value can only be 'Male', 'Female', or 'Other'.",
+          {
+            extensions: {
+              code: err.parent.code,
+              originalError: err.name,
+            },
+          }
+        );
+      } else {
+        throw Error(err);
+      }
     } else {
-      throw Error(err);
+      throw new GraphQLError(err.parent.detail, {
+        extensions: {
+          code: err.parent.code,
+          originalError: err.name,
+        },
+      });
     }
   }
 };

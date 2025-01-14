@@ -29,6 +29,7 @@ const ProjectType = new GraphQLObjectType({
     fixedAmount: { type: GraphQLInt },
     hourlyRate: { type: GraphQLFloat },
     b2bFlag: { type: GraphQLBoolean },
+    milestones: { type: GraphQLInt },
 
     createdAt: { type: GraphQLDate },
     updatedAt: { type: GraphQLDate },

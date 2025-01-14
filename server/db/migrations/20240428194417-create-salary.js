@@ -24,15 +24,19 @@ module.exports = {
       },
       amount: {
         type: Sequelize.INTEGER,
+        allowNull: false,
       },
       effectiveDate: {
         type: Sequelize.DATE,
+        allowNull: false,
       },
       incrementDate: {
         type: Sequelize.DATE,
+        allowNull: false,
       },
       incrementPercentage: {
         type: Sequelize.INTEGER,
+        allowNull: false,
       },
       createdAt: {
         allowNull: false,

@@ -1,9 +1,11 @@
-const { db } = require("../db/models");
-const { Attendance } = db;
+const { GraphQLError } = require("graphql");
+const {
+  db: { Attendance },
+} = require("../db/models");
 
-const GetAllAttendances = async () => {
+const GetAllAttendances = async (parent) => {
   try {
-    const attendances = await Attendance.findAll({});
+    const attendances = await Attendance.findAll();
     return attendances;
   } catch (err) {
     console.error(err);
@@ -34,6 +36,7 @@ const CreateAttendance = async (parent, args) => {
       tourHoliday,
       weekend,
       leave,
+      overtime,
     } = args;
 
     const attendance = await Attendance.create({
@@ -45,17 +48,17 @@ const CreateAttendance = async (parent, args) => {
       tourHoliday,
       weekend,
       leave,
+      overtime,
     });
     return attendance;
   } catch (err) {
     console.error(err);
-    if (err.parent.code === "23505") {
-      throw Error(err.errors[0].message);
-    } else if (err.parent.code === "23503") {
-      throw Error(err.parent.detail);
-    } else {
-      throw Error(err);
-    }
+    throw new GraphQLError(err.parent.detail, {
+      extensions: {
+        code: err.parent.code,
+        originalError: err.name,
+      },
+    });
   }
 };
 

@@ -24,7 +24,7 @@ module.exports = {
           },
         },
         date: {
-          type: Sequelize.DATE,
+          type: Sequelize.DATEONLY,
           allowNull: false,
         },
         inTime: {
@@ -47,8 +47,11 @@ module.exports = {
           allowNull: false,
         },
         leave: {
-          type: Sequelize.BOOLEAN,
+          type: Sequelize.FLOAT,
           allowNull: false,
+        },
+        overtime: {
+          type: Sequelize.FLOAT,
         },
         createdAt: {
           allowNull: false,

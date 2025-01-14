@@ -1,7 +1,7 @@
 const graphql = require("graphql");
 const { GraphQLDate, GraphQLLocalTime } = require("graphql-scalars");
 
-const { GraphQLObjectType, GraphQLID, GraphQLBoolean } = graphql;
+const { GraphQLObjectType, GraphQLID, GraphQLBoolean, GraphQLFloat } = graphql;
 
 const AttendanceType = new GraphQLObjectType({
   name: "Attendance",
@@ -14,7 +14,8 @@ const AttendanceType = new GraphQLObjectType({
     publicHoliday: { type: GraphQLBoolean },
     tourHoliday: { type: GraphQLBoolean },
     weekend: { type: GraphQLBoolean },
-    leave: { type: GraphQLBoolean },
+    leave: { type: GraphQLFloat },
+    overtime: { type: GraphQLFloat },
 
     createdAt: { type: GraphQLDate },
     updatedAt: { type: GraphQLDate },

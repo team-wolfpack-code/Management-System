@@ -1,7 +1,7 @@
 "use strict";
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
-  class Tax extends Model {
+  class Overtime extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -9,41 +9,34 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      Overtime.belongsTo(models.Role, {
+        foreignKey: "roleId",
+        sourceKey: "id",
+      });
     }
   }
-  Tax.init(
+  Overtime.init(
     {
-      minIncome: {
+      roleId: {
         type: DataTypes.INTEGER,
         allowNull: false,
-        unique: true,
       },
-      maxIncome: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        unique: true,
-      },
-      taxRate: {
-        type: DataTypes.DOUBLE,
+
+      gender: {
+        type: DataTypes.ENUM,
+        values: ["Male", "Female", "Other"],
         allowNull: false,
       },
-      taxAmount: {
-        type: DataTypes.INTEGER,
+
+      rate: {
+        type: DataTypes.FLOAT,
         allowNull: false,
       },
     },
     {
       sequelize,
-      modelName: "Tax",
-
-      // Define a unique constraint for the combination of minIncome and maxIncome
-      indexes: [
-        {
-          unique: true,
-          fields: ["minIncome", "maxIncome"],
-        },
-      ],
+      modelName: "Overtime",
     }
   );
-  return Tax;
+  return Overtime;
 };

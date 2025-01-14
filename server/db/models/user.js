@@ -43,11 +43,12 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "roleId",
         sourceKey: "id",
       });
-      User.belongsToMany(models.Project, {
-        through: "User_Project",
-        // foreignKey: "Resources_allocated",
-        // sourceKey: "id",
-      });
+      // User.belongsToMany(models.Project, {
+      //   through: "User_Project",
+      //   as: "Projects",
+      //   // foreignKey: "Resources_allocated",
+      //   // sourceKey: "id",
+      // });
       User.belongsTo(models.Department, {
         foreignKey: "departmentId",
         sourceKey: "id",
@@ -79,6 +80,11 @@ module.exports = (sequelize, DataTypes) => {
       },
       mobileNo: {
         type: DataTypes.STRING,
+        allowNull: false,
+      },
+      gender: {
+        type: DataTypes.ENUM,
+        values: ["Male", "Female", "Other"],
         allowNull: false,
       },
       cnic: {
@@ -120,7 +126,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       },
       availableLeaves: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.FLOAT,
         allowNull: false,
       },
       commissionFlag: {
@@ -128,7 +134,11 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       },
       commissionPercentage: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.DECIMAL,
+        allowNull: false,
+      },
+      providentFund: {
+        type: DataTypes.FLOAT,
         allowNull: false,
       },
 

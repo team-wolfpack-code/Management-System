@@ -1,9 +1,11 @@
-const { db } = require("../db/models");
-const { Invoice } = db;
+const { GraphQLError } = require("graphql");
+const {
+  db: { Invoice },
+} = require("../db/models");
 
-const GetAllInvoices = async () => {
+const GetAllInvoices = async (parent) => {
   try {
-    const invoices = await Invoice.findAll({});
+    const invoices = await Invoice.findAll();
     return invoices;
   } catch (err) {
     console.error(err);
@@ -28,17 +30,24 @@ const CreateInvoice = async (parent, args) => {
     const invoice = await Invoice.create(args);
     return invoice;
   } catch (err) {
-    console.error("-------->", err.parent.message);
-    if (err.parent.code === "23505") {
-      throw Error(err.errors[0].message);
-    } else if (err.parent.code === "23503") {
-      throw Error(err.parent.detail);
-    } else if (err.parent.code === "22P02") {
-      throw Error(
-        "The status value can only be 'Pending', 'Recieved', or 'Cancelled'."
+    console.error("-------->", err);
+    if (err.parent.code === "22P02") {
+      throw new GraphQLError(
+        "The status value can only be 'Pending', 'Recieved', or 'Cancelled'.",
+        {
+          extensions: {
+            code: err.parent.code,
+            originalError: err.name,
+          },
+        }
       );
     } else {
-      throw Error(err);
+      throw new GraphQLError(err.parent.detail, {
+        extensions: {
+          code: err.parent.code,
+          originalError: err.name,
+        },
+      });
     }
   }
 };

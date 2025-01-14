@@ -1,24 +1,12 @@
-const graphql = require("graphql");
-
-const { db } = require("../db/models");
-const { Shift } = db;
-// const { ShiftType } = require("../schema-types");
-// const error = require("../utils/error");
-
-// const {
-//   GraphQLObjectType,
-//   GraphQLSchema,
-//   GraphQLString,
-//   GraphQLID,
-//   GraphQLInt,
-//   GraphQLList,
-//   GraphQLNonNull, // Used for making a field required.
-// } = graphql;
+const { GraphQLError } = require("graphql");
+const {
+  db: { Shift },
+} = require("../db/models");
 
 // Get All Shifts:
-const GetAllShifts = async () => {
+const GetAllShifts = async (parent) => {
   try {
-    const shifts = await Shift.findAll({});
+    const shifts = await Shift.findAll();
     return shifts;
   } catch (err) {
     console.error(err);
@@ -32,10 +20,7 @@ const GetShiftById = async (parent, args) => {
     const shift = await Shift.findOne({
       where: { id: args.id },
     });
-    // if (shift) {
     return shift;
-    // }
-    // return { message: "There isn't any Shift of this id exist." };
   } catch (err) {
     console.error(err);
     throw Error(err);
@@ -46,13 +31,6 @@ const GetShiftById = async (parent, args) => {
 const AddShift = async (parent, args) => {
   try {
     const { shift, startTime, endTime } = args;
-
-    // const shifts = await Shift.findOne({
-    //   where: { shift },
-    // });
-    // if (shifts) {
-    //   throw new Error("This Shift already exist.");
-    // }
     const newShift = await Shift.create({
       shift,
       startTime,
@@ -60,11 +38,13 @@ const AddShift = async (parent, args) => {
     });
     return newShift;
   } catch (err) {
-    if (err.parent.code === "23505") {
-      throw Error(err.errors[0].message);
-    } else {
-      throw Error(err);
-    }
+    console.error("-------->", err);
+    throw new GraphQLError(err.parent.detail, {
+      extensions: {
+        code: err.parent.code,
+        originalError: err.name,
+      },
+    });
   }
 };
 

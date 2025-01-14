@@ -1,9 +1,11 @@
-const { db } = require("../db/models");
-const { Project_Progress } = db;
+const { GraphQLError } = require("graphql");
+const {
+  db: { Project_Progress },
+} = require("../db/models");
 
-const GetAllProjectProgresses = async () => {
+const GetAllProjectProgresses = async (parent) => {
   try {
-    const projectProgresses = await Project_Progress.findAll({});
+    const projectProgresses = await Project_Progress.findAll();
     return projectProgresses;
   } catch (err) {
     console.error(err);
@@ -28,14 +30,13 @@ const CreateProjectProgress = async (parent, args) => {
     const projectProgress = await Project_Progress.create(args);
     return projectProgress;
   } catch (err) {
-    // console.error("-------->", err.parent.message);
-    if (err.parent.code === "23505") {
-      throw Error(err.errors[0].message);
-    } else if (err.parent.code === "23503") {
-      throw Error(err.parent.detail);
-    } else {
-      throw Error(err);
-    }
+    console.error("-------->", err);
+    throw new GraphQLError(err.parent.detail, {
+      extensions: {
+        code: err.parent.code,
+        originalError: err.name,
+      },
+    });
   }
 };
 

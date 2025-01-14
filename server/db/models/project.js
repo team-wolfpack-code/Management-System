@@ -17,11 +17,11 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "projectId",
         as: "Project_Progress",
       });
-      Project.belongsToMany(models.User, {
-        through: "User_Project",
-        // foreignKey: "resourcesAllocated",
-        // sourceKey: "id",
-      });
+      // Project.belongsToMany(models.User, {
+      //   through: "User_Project",
+      //   // foreignKey: "resourcesAllocated",
+      //   // sourceKey: "id",
+      // });
       Project.belongsTo(models.User, {
         foreignKey: "bdId",
         sourceKey: "id",
@@ -91,11 +91,15 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       },
       hourlyRate: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.DECIMAL,
         allowNull: false,
       },
       b2bFlag: {
         type: DataTypes.BOOLEAN,
+        allowNull: false,
+      },
+      milestones: {
+        type: DataTypes.INTEGER,
         allowNull: false,
       },
     },

@@ -8,8 +8,9 @@ const ProjectType = require("./Project");
 const ProjectProgressType = require("./Project-Progress");
 const InvoiceType = require("./Invoice");
 const RolePrivilegesType = require("./Role-Privileges");
-const SalarySlipType = require("./Salary-Slip");
+const { SalarySlipType, GenerateSalarySlipType } = require("./Salary-Slip");
 const TaxType = require("./Tax");
+const OvertimeType = require("./Overtime");
 const LoginResponseType = require("./Auth");
 
 module.exports = {
@@ -24,6 +25,8 @@ module.exports = {
   InvoiceType,
   RolePrivilegesType,
   SalarySlipType,
+  GenerateSalarySlipType,
   TaxType,
+  OvertimeType,
   LoginResponseType,
 };

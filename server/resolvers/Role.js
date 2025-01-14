@@ -1,9 +1,11 @@
-const { db } = require("../db/models");
-const { Role } = db;
+const { GraphQLError } = require("graphql");
+const {
+  db: { Role },
+} = require("../db/models");
 
-const GetAllRoles = async () => {
+const GetAllRoles = async (parent) => {
   try {
-    const roles = await Role.findAll({});
+    const roles = await Role.findAll();
     return roles;
   } catch (err) {
     console.error(err);
@@ -16,10 +18,7 @@ const GetRoleById = async (parent, args) => {
     const role = await Role.findOne({
       where: { id: args.id },
     });
-    // if (shift) {
     return role;
-    // }
-    // return { message: "There isn't any Shift of this id exist." };
   } catch (err) {
     console.error(err);
     throw Error(err);
@@ -37,14 +36,13 @@ const AddRole = async (parent, args) => {
     });
     return role;
   } catch (err) {
-    console.error(err);
-    if (err.parent.code === "23505") {
-      throw Error(err.errors[0].message);
-    } else if (err.parent.code === "23503") {
-      throw Error(err.parent.detail);
-    } else {
-      throw Error(err);
-    }
+    console.error("-------->", err);
+    throw new GraphQLError(err.parent.detail, {
+      extensions: {
+        code: err.parent.code,
+        originalError: err.name,
+      },
+    });
   }
 };
 
